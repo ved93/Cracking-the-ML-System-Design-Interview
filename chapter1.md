@@ -11,7 +11,11 @@
 
 *Interviewer*: Thats a good question. We define churn as the user who has not bought anything from our platform in last 30 days. Although, you can come up with your own definition of churn. 
 
-*Vee*: Okay. So we have to predict if the user will buy anything from our platform in next 30 days or not. Do you need this as batch system or real time system?
+*Vee*: Okay. So we have to predict if the user will buy anything from our platform in next 30 days or not. I have few more questions:
+
+- Do you need this as batch system or real time system?
+- Do you need the probabilities or binary outcome?
+- What should be final output you will need? userid and churn probability in next 30 days? 
 
 *Interviewer*: Lets go with batch system. We will talk about real time system later.
 
@@ -47,12 +51,20 @@ Do you want me to go deeper or give you the basic design of the system?
 
 - we have data available for last 2-3 years and data is big
 - Going ahead with batch system and not real time system.
+- 
 
 Here is the basic system:
 
-- I will schedule a job to run every day to create features for the model. Scheduler will help me setup the alert if the job fails and monitoring setup. This job will store the features into feature store or database or any file store we want to have. 
-- Model building 
-- 
+![Basic System](attachments/chap1.png)
+
+- I will schedule a job to run every day to create features for the model. Scheduler will help me setup the alert if the job fails and monitoring setup. This job will store the features into feature store or database or any file store we want to use. 
+- Model building : We will train a model here. We will use 70-30 split to train and test the model. We will use 5 fold cross validation to train the model. We will use grid search to find the best hyperparameters. We will use random forest as the model. 
+- Model Registry: We will store the model in model store. We can use MLflow here for versioning and storing other info. 
+- Inference: Set up daily inference job which fetches features from feature store and predict the probability of user churn and store these predictions in database. 
+
+
+*Interviewer*: Okay. So you have given me the basic overview of the system. Lets go deeper into each component. Lets start with feature store. How will you design feature store?
+
 
 
 
